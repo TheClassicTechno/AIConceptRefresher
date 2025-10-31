@@ -411,6 +411,35 @@ function goHome() {
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new AIConceptRefresher();
     
+    // Initialize core systems for quiz functionality
+    if (window.ProgressTracker) {
+        window.progressTracker = new ProgressTracker();
+    }
+    if (window.QuizEngine) {
+        window.quizEngine = new QuizEngine();
+    }
+    
+    // Initialize Real AI Engine for enhanced learning
+    if (window.SimpleAIEngine) {
+        console.log('Starting Simple AI Engine initialization...');
+        window.SimpleAIEngine.initialize()
+            .then((success) => {
+                if (success) {
+                    console.log('Simple AI Engine with WebLLM initialized successfully!');
+                    console.log('Your learning platform now has real AI capabilities!');
+                    console.log('Try the AI Lab to chat with the AI!');
+                } else {
+                    console.log('Using fallback AI system - still intelligent, just not LLM-powered');
+                }
+            })
+            .catch(error => {
+                console.warn('AI Engine initialization failed:', error);
+                console.log('Don\'t worry - your learning platform still works great!');
+            });
+    } else {
+        console.log('AI Engine not found - checking file loading...');
+    }
+    
     // Add smooth reveal animations
     setTimeout(() => {
         document.querySelectorAll('.fade-in').forEach((element, index) => {
