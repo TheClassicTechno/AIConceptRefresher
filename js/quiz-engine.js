@@ -60,6 +60,11 @@ class QuizEngine {
         // Get user's performance history for this subject
         const performanceData = window.ProgressTracker.getSubjectPerformance(subject.name);
         
+        // Try to get AI-generated questions first
+        if (window.AIEngine && window.AIEngine.initialized) {
+            questions = this.getAIGeneratedQuestions(subject, config, performanceData);
+        }
+        
         if (config.adaptiveLearning && performanceData) {
             questions = this.adaptiveQuestionSelection(questions, performanceData);
         }
@@ -83,6 +88,62 @@ class QuizEngine {
 
         // Shuffle and limit
         return this.shuffleArray(questions).slice(0, config.questionCount);
+    }
+
+    // Get AI-generated questions mixed with existing questions
+    async getAIGeneratedQuestions(subject, config, performanceData) {
+        let aiQuestions = [];
+        let existingQuestions = [...subject.questions];
+        
+        try {
+            // Generate 30% AI questions, 70% existing questions
+            const aiCount = Math.floor(config.questionCount * 0.3);
+            const userLevel = this.calculateUserLevel(performanceData);
+            const weakTopics = this.identifyWeakTopics(performanceData);
+            
+            for (let i = 0; i < aiCount; i++) {
+                const aiQuestion = await window.AIEngine.generateQuestion(
+                    subject.name.toLowerCase().replace(/\s+/g, '_'), 
+                    userLevel, 
+                    weakTopics
+                );
+                
+                if (aiQuestion) {
+                    aiQuestions.push({
+                        ...aiQuestion,
+                        isAIGenerated: true,
+                        timestamp: Date.now()
+                    });
+                }
+            }
+            
+            // Mix AI questions with existing questions
+            const mixedQuestions = [
+                ...aiQuestions,
+                ...this.shuffleArray(existingQuestions).slice(0, config.questionCount - aiQuestions.length)
+            ];
+            
+            return this.shuffleArray(mixedQuestions);
+            
+        } catch (error) {
+            console.warn('AI question generation failed, using existing questions:', error);
+            return existingQuestions;
+        }
+    }
+
+    // Calculate user skill level for AI
+    calculateUserLevel(performanceData) {
+        if (!performanceData || performanceData.totalQuestions < 5) {
+            return 'beginner';
+        }
+        
+        const accuracy = performanceData.correctAnswers / performanceData.totalQuestions;
+        const avgTime = performanceData.totalTime / performanceData.totalQuestions;
+        
+        // Consider both accuracy and speed
+        if (accuracy > 0.85 && avgTime < 15000) return 'advanced';
+        if (accuracy > 0.7 && avgTime < 25000) return 'intermediate';
+        return 'beginner';
     }
 
     // Adaptive question selection based on performance
@@ -267,7 +328,7 @@ class QuizEngine {
         window.ProgressTracker.recordAnswer(this.currentQuiz.subjectKey, answerData);
     }
 
-    // Show answer feedback
+    // Show answer feedback with AI enhancement
     showAnswerFeedback(question, isCorrect) {
         const feedback = document.getElementById('feedback');
         const options = document.querySelectorAll('.option');
@@ -282,17 +343,49 @@ class QuizEngine {
             option.onclick = null; // Disable further clicks
         });
 
-        // Show feedback message
+        // Get AI-powered feedback if available
+        let smartFeedback = question.explanation;
+        let encouragement = '';
+        let learningTip = '';
+        
+        if (window.AIEngine && window.AIEngine.initialized) {
+            const timeSpent = Date.now() - this.questionStartTime;
+            const aiFeedback = window.AIEngine.generateSmartFeedback(
+                question, 
+                this.selectedOption, 
+                isCorrect, 
+                timeSpent
+            );
+            
+            if (aiFeedback) {
+                smartFeedback = aiFeedback.message || question.explanation;
+                encouragement = aiFeedback.encouragement || '';
+                learningTip = aiFeedback.learningTip || '';
+            }
+        }
+
+        // Show enhanced feedback message
         feedback.innerHTML = `
             <div class="feedback-content ${isCorrect ? 'correct' : 'incorrect'}">
                 <div class="feedback-header">
                     <i class="fas ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i>
                     <strong>${isCorrect ? 'Correct' : 'Incorrect'}</strong>
+                    ${question.isAIGenerated ? '<span class="ai-badge">AI Generated</span>' : ''}
                 </div>
-                <p>${question.explanation}</p>
+                
+                ${encouragement ? `<div class="encouragement">${encouragement}</div>` : ''}
+                
+                <p class="explanation">${smartFeedback}</p>
+                
+                ${learningTip ? `<div class="learning-tip">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>${learningTip}</span>
+                </div>` : ''}
+                
                 <div class="feedback-meta">
                     <span class="topic-tag">${question.topic}</span>
                     <span class="difficulty-tag">${question.difficulty}</span>
+                    ${question.isAIGenerated ? '<span class="ai-tag">AI Enhanced</span>' : ''}
                 </div>
             </div>
         `;

@@ -3,64 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Concept Refresher - Master Your Knowledge</title>
-    <p>by Juli Huang</p>
-    <link rel="stylesheet" href="styles/main.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>AI Concept Refresher - Intelligent Learning Platform</title>
+    <link rel="stylesheet" href="styles/sleek.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-brand">
+            <a href="#home" class="logo">
                 <i class="fas fa-brain"></i>
-                <span>Concept Refresher</span>
-            </div>
-            <div class="nav-menu">
-                <a href="#home" class="nav-link active">Home</a>
-                <a href="#subjects" class="nav-link">Subjects</a>
-                <a href="#progress" class="nav-link">Progress</a>
-                <a href="#about" class="nav-link">About</a>
-            </div>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+                AI Concept Refresher
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#subjects" class="nav-link">Subjects</a></li>
+                <li><a href="#progress" class="nav-link">Progress</a></li>
+                <li><a href="#ai-lab" class="nav-link">AI Lab</a></li>
+            </ul>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
-            <div class="hero-text">
-                <h1>Master Your Knowledge with <span class="highlight">Smart</span> Learning</h1>
-                <p>Build stronger understanding of complex subjects through adaptive quizzes, spaced repetition, and intelligent feedback that helps you learn more effectively.</p>
-                <div class="hero-buttons">
-                    <button class="btn btn-primary" onclick="startLearning()">Start Learning</button>
-                    <button class="btn btn-secondary" onclick="viewProgress()">View Progress</button>
-                </div>
-            </div>
-            <div class="hero-visual">
-                <div class="brain-animation">
+            <h1>Master Knowledge with <span style="background: var(--ai-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AI Power</span></h1>
+            <p>Experience the future of learning with our AI-powered platform that adapts to your learning style, generates personalized questions, and provides intelligent feedback to accelerate your mastery.</p>
+            <div class="cta-buttons">
+                <button class="btn btn-primary" onclick="startLearning()">
+                    <i class="fas fa-rocket"></i>
+                    Start Learning
+                </button>
+                <button class="btn btn-ai" onclick="showAILab()">
                     <i class="fas fa-brain"></i>
-                    <div class="pulse-ring"></div>
-                    <div class="pulse-ring delay-1"></div>
-                    <div class="pulse-ring delay-2"></div>
-                </div>
+                    AI Lab
+                </button>
+                <button class="btn btn-secondary" onclick="viewProgress()">
+                    <i class="fas fa-chart-line"></i>
+                    View Progress
+                </button>
             </div>
         </div>
     </section>
 
     <!-- Subject Selection -->
-    <section id="subjects" class="subjects-section">
+    <section id="subjects" class="subjects-section section">
         <div class="container">
             <h2>Choose Your Subject Area</h2>
             <p class="section-subtitle">Pick a subject to start building your knowledge</p>
             
             <div class="subjects-grid" id="subjectsGrid">
                 <!-- Subject cards will be dynamically generated -->
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Lab Section -->
+    <section id="ai-lab" class="section hidden">
+        <div class="container">
+            <h2 class="text-center mb-4">🧠 AI Lab - Chat with Your Learning Assistant</h2>
+            <p class="text-center mb-4">Interact directly with our AI to get personalized help, generate custom questions, or discuss any topic!</p>
+            
+            <div class="ai-lab-container">
+                <div class="ai-chat-container glass-strong">
+                    <div class="ai-status-bar">
+                        <div class="ai-status" id="aiStatus">
+                            <i class="fas fa-circle" id="aiStatusIcon"></i>
+                            <span id="aiStatusText">Initializing AI...</span>
+                        </div>
+                        <div class="ai-model-info" id="aiModelInfo">
+                            WebLLM Ready
+                        </div>
+                    </div>
+                    
+                    <div class="ai-chat-messages" id="aiChatMessages">
+                        <div class="ai-message">
+                            <div class="ai-avatar">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="ai-message-content">
+                                <p>Hello! I'm your AI learning assistant. I can help you with:</p>
+                                <ul>
+                                    <li>🧠 Generating custom quiz questions</li>
+                                    <li>📚 Explaining complex concepts</li>
+                                    <li>📈 Creating study plans</li>
+                                    <li>💡 Providing learning tips</li>
+                                </ul>
+                                <p>What would you like to learn about today?</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-chat-input-container">
+                        <div class="ai-quick-prompts">
+                            <button class="quick-prompt-btn" onclick="sendQuickPrompt('Generate a Data Structures question')">
+                                <i class="fas fa-code"></i> Generate DS Question
+                            </button>
+                            <button class="quick-prompt-btn" onclick="sendQuickPrompt('Explain machine learning basics')">
+                                <i class="fas fa-robot"></i> Explain ML Basics
+                            </button>
+                            <button class="quick-prompt-btn" onclick="sendQuickPrompt('Create a study plan for algorithms')">
+                                <i class="fas fa-calendar"></i> Study Plan
+                            </button>
+                        </div>
+                        
+                        <div class="ai-input-group">
+                            <input type="text" id="aiChatInput" placeholder="Ask me anything about your studies..." class="ai-chat-input" maxlength="500">
+                            <button id="aiSendBtn" class="ai-send-btn" onclick="sendAIMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="ai-lab-sidebar">
+                    <div class="ai-feature-card glass">
+                        <h3><i class="fas fa-magic"></i> AI Capabilities</h3>
+                        <ul>
+                            <li>Real-time question generation</li>
+                            <li>Adaptive difficulty adjustment</li>
+                            <li>Personalized explanations</li>
+                            <li>Study plan optimization</li>
+                            <li>Learning pattern analysis</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="ai-stats-card glass">
+                        <h3><i class="fas fa-chart-bar"></i> AI Performance</h3>
+                        <div class="ai-stat">
+                            <span class="ai-stat-label">Questions Generated:</span>
+                            <span class="ai-stat-value" id="aiQuestionsGenerated">0</span>
+                        </div>
+                        <div class="ai-stat">
+                            <span class="ai-stat-label">Conversations:</span>
+                            <span class="ai-stat-value" id="aiConversations">0</span>
+                        </div>
+                        <div class="ai-stat">
+                            <span class="ai-stat-label">Model:</span>
+                            <span class="ai-stat-value">Llama-3.2-1B</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -141,6 +225,13 @@
         </div>
     </footer>
 
-    <!-- JavaScript functionality removed for HTML/CSS only version -->
+    <!-- AI-Powered Scripts -->
+    <!-- JavaScript Files -->
+    <script src="js/real-ai-engine.js"></script>
+    <script src="js/subjects.js"></script>
+    <script src="js/quiz-engine.js"></script>
+    <script src="js/progress-tracker.js"></script>
+    <script src="js/ai-lab.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

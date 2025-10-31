@@ -411,6 +411,24 @@ function goHome() {
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new AIConceptRefresher();
     
+    // Initialize Real AI Engine for enhanced learning
+    if (window.RealAIEngine) {
+        console.log('🚀 Starting Real AI Engine initialization...');
+        window.RealAIEngine.initialize()
+            .then((success) => {
+                if (success) {
+                    console.log('🧠 Real AI Engine with WebLLM initialized successfully!');
+                    console.log('✨ Your learning platform now has real AI capabilities!');
+                } else {
+                    console.log('🔄 Using fallback AI system - still intelligent, just not LLM-powered');
+                }
+            })
+            .catch(error => {
+                console.warn('AI Engine initialization failed:', error);
+                console.log('📚 Don\'t worry - your learning platform still works great!');
+            });
+    }
+    
     // Add smooth reveal animations
     setTimeout(() => {
         document.querySelectorAll('.fade-in').forEach((element, index) => {
