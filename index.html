@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concept Refresher - Master Your Knowledge</title>
+    <p>by Juli Huang</p>
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-brain"></i>
+                <span>Concept Refresher</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#subjects" class="nav-link">Subjects</a>
+                <a href="#progress" class="nav-link">Progress</a>
+                <a href="#about" class="nav-link">About</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Master Your Knowledge with <span class="highlight">Smart</span> Learning</h1>
+                <p>Build stronger understanding of complex subjects through adaptive quizzes, spaced repetition, and intelligent feedback that helps you learn more effectively.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="startLearning()">Start Learning</button>
+                    <button class="btn btn-secondary" onclick="viewProgress()">View Progress</button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="brain-animation">
+                    <i class="fas fa-brain"></i>
+                    <div class="pulse-ring"></div>
+                    <div class="pulse-ring delay-1"></div>
+                    <div class="pulse-ring delay-2"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Subject Selection -->
+    <section id="subjects" class="subjects-section">
+        <div class="container">
+            <h2>Choose Your Subject Area</h2>
+            <p class="section-subtitle">Pick a subject to start building your knowledge</p>
+            
+            <div class="subjects-grid" id="subjectsGrid">
+                <!-- Subject cards will be dynamically generated -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Quiz Interface -->
+    <section id="quiz" class="quiz-section hidden">
+        <div class="container">
+            <div class="quiz-header">
+                <div class="quiz-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <span class="progress-text" id="progressText">Question 1 of 10</span>
+                </div>
+                <button class="btn btn-secondary" onclick="exitQuiz()">Exit Quiz</button>
+            </div>
+            
+            <div class="quiz-content">
+                <div class="question-card">
+                    <h3 id="questionText">Loading question...</h3>
+                    <div class="options-container" id="optionsContainer">
+                        <!-- Options will be dynamically generated -->
+                    </div>
+                    <div class="quiz-actions">
+                        <button class="btn btn-primary" id="submitAnswer" onclick="submitAnswer()" disabled>Submit Answer</button>
+                        <button class="btn btn-secondary" id="nextQuestion" onclick="nextQuestion()" style="display: none;">Next Question</button>
+                    </div>
+                    <div class="feedback" id="feedback" style="display: none;">
+                        <!-- Feedback will be shown here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Progress Dashboard -->
+    <section id="progress" class="progress-section">
+        <div class="container">
+            <h2>Your Learning Progress</h2>
+            <div class="progress-dashboard">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3 id="totalQuestions">0</h3>
+                        <p>Questions Answered</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-bullseye"></i>
+                        <h3 id="accuracy">0%</h3>
+                        <p>Overall Accuracy</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-trophy"></i>
+                        <h3 id="streak">0</h3>
+                        <p>Current Streak</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-calendar"></i>
+                        <h3 id="daysActive">0</h3>
+                        <p>Days Active</p>
+                    </div>
+                </div>
+                
+                <div class="subject-progress">
+                    <h3>Subject Mastery</h3>
+                    <div class="subject-progress-list" id="subjectProgressList">
+                        <!-- Subject progress will be dynamically generated -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>2025 Concept Refresher. Build better understanding through smart learning.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript functionality removed for HTML/CSS only version -->
+</body>
+</html>
